@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import HoppyImageGetter from './HoppyImageGetter';
+import LoginHoppy from './Login';
 import HoppyNavb from './HoppyNavb';
+import RegisterHoppy from './register';
 import ModalUpload from './ModalUpload';
 import { Helmet } from 'react-helmet';
 import { Routes, Route } from "react-router-dom";
@@ -55,7 +57,7 @@ function Hoppy() {
                     </Accordion.Body>
                 </Accordion.Item>
             </Accordion>
-            <Helmet bodyAttributes={{style: 'background-color : black'}}/>
+            <Helmet bodyAttributes={{ style: 'background-color : black' }} />
         </div>
     )
 }
@@ -65,6 +67,8 @@ function App() {
         <div>
             <HoppyNavb />
             <Routes>
+                <Route path="/login" element={<LoginHoppy />} />
+                <Route path="/register" element={<RegisterHoppy />} />
                 <Route path="/hoppyInsta" element={<HoppyInsta />} />
                 <Route path="/" element={<Hoppy />} />
             </Routes>

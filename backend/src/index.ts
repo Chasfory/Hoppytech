@@ -2,6 +2,7 @@ import { json } from "body-parser";
 import express from "express";
 import mongoose, { Mongoose } from "mongoose";
 import hoppy_router from "./hoppyimg";
+import hoppy_login from "./hoppyconnect"
 import cors from "cors";
 
 const app = express();
@@ -11,6 +12,8 @@ app.use(json());
 app.use(cors());
 
 app.use(hoppy_router);
+
+app.use(hoppy_login);
 
 app.listen(3000, async () => {
     try {

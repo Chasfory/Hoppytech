@@ -4,17 +4,19 @@ import Axios from 'axios';
 import { Button, Modal, Form } from 'react-bootstrap';
 import DropdownButton from 'react-bootstrap/DropdownButton';
 import Dropdown from 'react-bootstrap/Dropdown';
+import { useNavigate } from 'react-router';
 
-function DeleteCardHoppy(id) {
-    Axios.delete('http://localhost:3000/hoppy/:' + id).then((reponse) => {
-        console.log("it's good delete")
+function DeleteCardHoppy({id, onSucces, onError}) {
+    Axios.delete('http://localhost:3000/hoppy/' + id).then((reponse) => {
+        onSucces(reponse);
     }).catch((error) => {
-        console.error(error)
+        onError(error);
     });
 }
 
 function DeleteHoppy({ id }) {
-    console.log(id)
+    let navigate = useNavigate();
+
     return (
         <div>
             <Modal.Header closeButton>
@@ -25,7 +27,14 @@ function DeleteHoppy({ id }) {
                     <div className="d-grid gap-2 mt-3">
                         <Button type="submit" variant="primary" onClick={(e) => {
                             e.preventDefault();
-                            DeleteCardHoppy({ id: id });
+                            DeleteCardHoppy(({
+                                id: id, onSucces: () => {
+                                    navigate('/hoppyInsta');
+                                },
+                                onError: () => {
+                                    console.log("error");
+                                }
+                            }));
                         }}>
                             Delete
                         </Button>
@@ -39,12 +48,12 @@ function DeleteHoppy({ id }) {
     );
 }
 
-function EditCardHoppy({ name, description, id }) {
+function EditCardHoppy({ name, description, id, onSucces, onError }) {
     console.log(id)
     Axios.put('http://localhost:3000/hoppy/' + id, { name, description }).then((response) => {
-        console.log("it's good edit")
+        onSucces(response);
     }).catch((error) => {
-        console.error(error)
+        onError(error);
     });
 }
 
@@ -54,6 +63,8 @@ function EditHoppy(props) {
         description: props.description,
         id: props.id
     });
+    let navigate = useNavigate();
+
     return (
         <div>
             <Modal.Header closeButton>
@@ -97,7 +108,14 @@ function EditHoppy(props) {
                         <Button type="submit" variant="primary" onClick={(e) => {
                             e.preventDefault();
                             console.log(state)
-                            EditCardHoppy({ name: state.name, description: state.description, id: state.id });
+                            EditCardHoppy({
+                                name: state.name, description: state.description, id: state.id, onSucces: () => {
+                                    navigate('/hoppyInsta');
+                                },
+                                onError: () => {
+                                    console.log("error");
+                                }
+                            })
                         }}>
                             Edit
                         </Button>
@@ -107,7 +125,7 @@ function EditHoppy(props) {
             <Modal.Footer>
                 <p>Aucun Hoppy n'a été blessé au cours de la construction de ce site</p>
             </Modal.Footer>
-        </div>
+        </div >
     );
 }
 

@@ -1,4 +1,5 @@
 import express from "express";
+import jwt from "jsonwebtoken"
 import { HoppyImgModel } from "./models";
 
 const router = express.Router();
@@ -29,8 +30,11 @@ router.get('/hoppy', (req, res) => {
 });
 
 router.delete('/hoppy/:id', (req, res) => {
+    console.log(req.headers.authorization);
+    const token = jwt.verify(req.headers.authorization!, 'azertyuiop');
+    console.log(token);
     HoppyImgModel.deleteOne({ id: req.params.id }).then(value => {
-        res.status(201).send('hoppy deleted');
+        res.status(200).send('hoppy deleted');
     }).catch(reason => {
         console.error(reason);
         res.status(500).send('not good');
@@ -39,7 +43,7 @@ router.delete('/hoppy/:id', (req, res) => {
 
 router.put('/hoppy/:id', (req, res) => {
     HoppyImgModel.updateOne({ id: req.params.id }, { $set: { name: req.body.name, description: req.body.description } }).then(value => {
-        res.status(201).send('hoppy changed');
+        res.status(200).send('hoppy changed');
     }).catch(reason => {
         console.error(reason);
         res.status(500).send('not good change');
